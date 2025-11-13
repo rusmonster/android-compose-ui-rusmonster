@@ -49,6 +49,7 @@ class BookListViewModel @Inject constructor(
     private suspend fun executeAction(action: BookListActions) {
         when (action) {
             is BookListActions.OnSearchChanged -> onSearchChanged(action)
+            // Add new actions here
         }
     }
 
@@ -62,7 +63,7 @@ class BookListViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
-    private suspend fun onSearchChanged(action: BookListActions.OnSearchChanged) {
+    private fun onSearchChanged(action: BookListActions.OnSearchChanged) {
         val dataState = _state.value as? BookListState.Data ?: return
         searchJob?.cancel()
         searchJob = viewModelScope.launch {

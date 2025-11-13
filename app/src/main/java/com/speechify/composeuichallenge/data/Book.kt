@@ -1,5 +1,10 @@
 package com.speechify.composeuichallenge.data
 
+import androidx.compose.runtime.Immutable
+import kotlinx.serialization.Serializable
+
+@Immutable
+@Serializable
 data class Book(
     val id: String,
     val name: String,
