@@ -1,9 +1,13 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.speechify.composeuichallenge.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -33,8 +37,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ComposeUIChallengeTheme {
-                CompositionLocalProvider(LocalNavController provides rememberNavController()) {
-                    App()
+                SharedTransitionLayout {
+                    CompositionLocalProvider(
+                        LocalNavController provides rememberNavController(),
+                        LocalSharedTransitionScope provides this@SharedTransitionLayout,
+                    ) {
+                        App()
+                    }
                 }
             }
         }
@@ -55,19 +64,22 @@ fun App() {
 
     NavHost(navController = navController, startDestination = Screens.BookList) {
         composable<Screens.BookList> {
-            BookListScreen(
-                onBookClick = { bookId ->
-                    navController.navigate(Screens.BookDetails(bookId))
-                }
-            )
+            CompositionLocalProvider(LocalAnimatedContentScope provides this) {
+                BookListScreen(
+                    onBookClick = { bookId ->
+                        navController.navigate(Screens.BookDetails(bookId))
+                    }
+                )
+            }
         }
 
         composable<Screens.BookDetails> { navBackStackEntry ->
             val bookId = navBackStackEntry.toRoute<Screens.BookDetails>().bookId
-
-            BookDetailsScreen(
-                bookId = bookId,
-            )
+            CompositionLocalProvider(LocalAnimatedContentScope provides this) {
+                BookDetailsScreen(
+                    bookId = bookId,
+                )
+            }
         }
     }
 }

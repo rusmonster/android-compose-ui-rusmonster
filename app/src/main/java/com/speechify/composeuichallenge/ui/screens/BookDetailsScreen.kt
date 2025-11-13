@@ -26,9 +26,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import coil3.compose.AsyncImage
 import com.speechify.composeuichallenge.R
 import com.speechify.composeuichallenge.ui.LocalNavController
+import com.speechify.composeuichallenge.ui.view.BookImageView
 import com.speechify.composeuichallenge.ui.view.LoadingView
 import com.speechify.composeuichallenge.viewmodel.BookDetailsEvent
 import com.speechify.composeuichallenge.viewmodel.BookDetailsState
@@ -73,12 +73,11 @@ private fun DataView(dataState: BookDetailsState.Data) {
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AsyncImage(
+        BookImageView(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f),
-            model = book.imageUrl,
-            contentDescription = book.description,
+            book = book,
         )
 
         Spacer(Modifier.size(16.dp))

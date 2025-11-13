@@ -38,6 +38,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.speechify.composeuichallenge.R
 import com.speechify.composeuichallenge.data.Book
+import com.speechify.composeuichallenge.ui.LocalAnimatedContentScope
+import com.speechify.composeuichallenge.ui.LocalSharedTransitionScope
+import com.speechify.composeuichallenge.ui.view.BookImageView
 import com.speechify.composeuichallenge.ui.view.LoadingView
 import com.speechify.composeuichallenge.viewmodel.BookListActions
 import com.speechify.composeuichallenge.viewmodel.BookListState
@@ -45,7 +48,9 @@ import com.speechify.composeuichallenge.viewmodel.BookListViewModel
 import java.util.Locale
 
 @Composable
-fun BookListScreen(onBookClick: (String) -> Unit) {
+fun BookListScreen(
+    onBookClick: (String) -> Unit
+) {
     Scaffold(modifier = Modifier.fillMaxSize()) { paddings ->
         Box(modifier = Modifier.padding(paddings)) {
             Body(onBookClick)
@@ -116,16 +121,17 @@ fun LazyItemScope.BookListItem(book: Book, onClick: (String) -> Unit) {
             .animateItem(),
         headlineContent = {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                AsyncImage(
+                BookImageView(
                     modifier = Modifier
                         .width(75.dp)
                         .height(100.dp),
-                    model = book.imageUrl,
-                    contentDescription = book.description,
+                    book = book,
                 )
 
                 Spacer(Modifier.size(10.dp))
+
                 Description(book)
+
                 Spacer(Modifier.size(10.dp))
 
                 Button(
