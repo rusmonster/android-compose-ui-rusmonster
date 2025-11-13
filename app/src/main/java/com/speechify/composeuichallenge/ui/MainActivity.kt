@@ -12,8 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.speechify.composeuichallenge.ui.screens.BookListScreen
 import com.speechify.composeuichallenge.ui.theme.ComposeUIChallengeTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.serialization.Serializable
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -23,8 +28,34 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ComposeUIChallengeTheme {
-                Greeting()
+                App()
             }
+        }
+    }
+}
+
+sealed interface Screens {
+    @Serializable
+    object BookList : Screens
+
+    @Serializable
+    data class BookDetails(val bookId: String)
+}
+
+@Composable
+fun App() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = Screens.BookList) {
+        composable<Screens.BookList> {
+            BookListScreen(
+                onBookClick = { bookId ->
+                    navController.navigate(Screens.BookDetails(bookId))
+                }
+            )
+        }
+
+        composable<Screens.BookDetails> {
+            // TODO
         }
     }
 }

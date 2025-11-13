@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Compose UI Challenge</string>
+    <string name="search_for_books">Search for books</string>
+    <string name="details">Details</string>
 </resources>
