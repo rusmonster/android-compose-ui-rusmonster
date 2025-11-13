@@ -19,6 +19,7 @@ sealed interface BookListState {
 
     @Immutable
     data class Data(
+        val filter: String = "",
         val books: List<Book> = emptyList()
     ) : BookListState
 }
@@ -65,12 +66,14 @@ class BookListViewModel @Inject constructor(
 
     private fun onSearchChanged(action: BookListActions.OnSearchChanged) {
         val dataState = _state.value as? BookListState.Data ?: return
+        val updatedState = dataState.copy(filter = action.filter)
+
+        _state.value = updatedState
+
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             val filteredBooks = booksRepository.searchBook(action.filter)
-            _state.value = dataState.copy(
-                books = filteredBooks
-            )
+            _state.value = updatedState.copy(books = filteredBooks)
         }
     }
 }

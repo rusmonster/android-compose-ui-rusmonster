@@ -35,11 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import coil3.compose.AsyncImage
 import com.speechify.composeuichallenge.R
 import com.speechify.composeuichallenge.data.Book
-import com.speechify.composeuichallenge.ui.LocalAnimatedContentScope
-import com.speechify.composeuichallenge.ui.LocalSharedTransitionScope
 import com.speechify.composeuichallenge.ui.view.BookImageView
 import com.speechify.composeuichallenge.ui.view.LoadingView
 import com.speechify.composeuichallenge.viewmodel.BookListActions
@@ -82,14 +79,12 @@ private fun BookList(
     onFilterChanged: (String) -> Unit,
     onBookClick: (String) -> Unit,
 ) {
-    var searchFilter by rememberSaveable { mutableStateOf("") }
-
     Column(modifier = Modifier.fillMaxSize()) {
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
-            value = searchFilter,
+            value = dataState.filter,
             singleLine = true,
             placeholder = { Text(stringResource(R.string.search_for_books)) },
             shape = ShapeDefaults.Medium,
@@ -97,10 +92,7 @@ private fun BookList(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            onValueChange = {
-                searchFilter = it
-                onFilterChanged(it)
-            }
+            onValueChange = onFilterChanged
         )
 
         Spacer(Modifier.size(10.dp))
