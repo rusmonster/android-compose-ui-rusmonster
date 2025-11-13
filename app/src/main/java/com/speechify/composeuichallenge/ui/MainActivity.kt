@@ -83,24 +83,3 @@ fun App() {
         }
     }
 }
-
-@Composable
-private fun Greeting(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Replace me with actual UI",
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun GreetingPreview() {
-    ComposeUIChallengeTheme {
-        Greeting()
-    }
-}
