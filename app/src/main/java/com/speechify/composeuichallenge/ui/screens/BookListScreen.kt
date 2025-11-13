@@ -103,7 +103,7 @@ private fun BookList(
 }
 
 @Composable
-fun LazyItemScope.BookListItem(book: Book, onClick: (String) -> Unit) {
+private fun LazyItemScope.BookListItem(book: Book, onClick: (String) -> Unit) {
     ListItem(
         modifier = Modifier
             .height(120.dp)
